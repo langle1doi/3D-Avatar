@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Xem nhân vật</title>
+<style>
+  body { margin:0; font:14px system-ui; background:#2b2f3a; color:#eee; overflow:hidden; }
+  #ui { position:fixed; top:8px; left:8px; background:#000a; padding:10px; border-radius:6px; }
+  #ui label { display:flex; justify-content:space-between; gap:8px; }
+  #status { color:#8f8; }
+</style>
+</head>
+<body>
+<!-- Xem file do tools/make_avatar.py tạo: view.html?m=../output/0002.glb -->
+<div id="ui"><div id="status"></div>
+  <label>Cười <input id="smile" type="range" min="0" max="1" step="0.01"></label>
+  <label>Chớp mắt <input id="blink" type="range" min="0" max="1" step="0.01" value="0"></label>
+  <label>Há miệng <input id="jaw" type="range" min="0" max="1" step="0.01" value="0"></label>
+</div>
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+<script type="module">
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const renderer = new THREE.WebGLRenderer({ antialias: true });
+renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 0.85;
+renderer.setSize(innerWidth, innerHeight); document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(0x2b2f3a);
+const camera = new THREE.PerspectiveCamera(30, innerWidth / innerHeight, 0.01, 50);
+const controls = new OrbitControls(camera, renderer.domElement);
+scene.environment = new THREE.PMREMGenerator(renderer).fromScene(new RoomEnvironment(), 0.04).texture;
+scene.add(new THREE.HemisphereLight(0xffffff, 0x887777, 0.6));
+const key = new THREE.DirectionalLight(0xfff0e0, 0.9); key.position.set(1.5, 2.5, 4); scene.add(key);
+const fill = new THREE.DirectionalLight(0xffe8e0, 0.6); fill.position.set(-3, 0.5, 3); scene.add(fill);
+const status = document.getElementById('status');
+new GLTFLoader().load(new URLSearchParams(location.search).get('m'), g => {
+  scene.add(g.scene); g.scene.updateMatrixWorld(true);
+  const box = new THREE.Box3().setFromObject(g.scene, true), head = box.max.y - 0.2;
+  controls.target.set(0, head, 0); camera.position.set(0, head, 1.1); controls.update();
+  const morphs = []; g.scene.traverse(o => { if (o.morphTargetDictionary) morphs.push(o); });
+  const set = (ns, v) => morphs.forEach(m => ns.forEach(n => { const i = m.morphTargetDictionary[n]; if (i !== undefined) m.morphTargetInfluences[i] = v; }));
+  const head0 = morphs.find(m => m.morphTargetDictionary.mouthSmileLeft !== undefined);
+  smile.value = head0 ? head0.morphTargetInfluences[head0.morphTargetDictionary.mouthSmileLeft] : 0;
+  smile.oninput = () => set(['mouthSmileLeft', 'mouthSmileRight'], +smile.value);
+  blink.oninput = () => set(['eyeBlinkLeft', 'eyeBlinkRight'], +blink.value);
+  jaw.oninput = () => set(['jawOpen'], +jaw.value);
+  window.__v = { camera, controls, renderer, scene, g };
+  status.textContent = `${morphs.length} mesh có biểu cảm`;
+}, undefined, e => status.textContent = 'lỗi ' + e.message);
+addEventListener('resize', () => { camera.aspect = innerWidth / innerHeight; camera.updateProjectionMatrix(); renderer.setSize(innerWidth, innerHeight); });
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); });
+</script>
+</body>
+</html>

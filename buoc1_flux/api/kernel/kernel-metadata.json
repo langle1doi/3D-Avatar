@@ -1,0 +1,15 @@
+{
+  "id": "TEN_KAGGLE_CUA_BAN/real2pixar-flux",
+  "title": "real2pixar-flux",
+  "code_file": "real2pixar_flux.ipynb",
+  "language": "python",
+  "kernel_type": "notebook",
+  "is_private": true,
+  "enable_gpu": true,
+  "enable_tpu": false,
+  "enable_internet": true,
+  "dataset_sources": ["TEN_KAGGLE_CUA_BAN/real-portraits", "TEN_KAGGLE_CUA_BAN/pixar-trig-ckpt"],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

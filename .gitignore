@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+hf_token.txt
+*token*.txt
+kaggle.json
+access_token
+.env
+.playwright-mcp/

@@ -1,0 +1,5 @@
+{
+  "_note": "Thay cho nút Nam/Nữ khi chạy hàng loạt. Ghi ID nhân vật nam; ID không có trong danh sách là nữ. beard: ảnh có râu màu sáng hoặc râu thưa mà máy không tự nhận ra.",
+  "snow": ["0003", "0004", "0005", "0008", "0009", "0011", "0015", "0024", "0025", "0026", "0027", "0030", "0031", "0032", "0033", "0035", "0037", "0039", "0040", "0041", "0042", "0047"],
+  "beard": ["0025", "0026", "0041", "0047"]
+}

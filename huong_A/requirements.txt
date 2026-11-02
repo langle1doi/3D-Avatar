@@ -1,0 +1,5 @@
+numpy==1.26.4
+pillow==10.2.0
+opencv-python==4.11.0.86
+mediapipe==1.0.1
+scipy==1.12.0
