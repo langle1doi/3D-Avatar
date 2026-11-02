@@ -178,4 +178,4 @@ Ghi công bắt buộc khi dùng: "Rain Rig (CC) Blender Foundation | studio.ble
 - Checkpoint LoRA `trig100.pt` (105MB) cho Bước 1: chủ repo gửi riêng.
 - Thư mục `pixar_parts_seg3_clean.zip` (197MB) cho Hướng A.
 - `blender/rain_bake.py` cần Blender và nhân vật gốc Rain (tải ở studio.blender.org). Chỉ chạy một lần để tạo `rain_rpm.glb`, file đó đã có sẵn trong `huong_A/blender/out/`.
-
+https://drive.google.com/drive/folders/1gHIP0pb0gK-OtXTAT7Znh4ozWef4wnh9?usp=sharing
